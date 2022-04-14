@@ -17,6 +17,11 @@ jobs:
       - name: Bundle layer with dependencies
         run: |
           zip -r build.zip .     
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: bundle.zip 
+          path: layers/ruby3.0.3.zip
 #  setup:
   #    steps: 
   #      - name: Create directory
