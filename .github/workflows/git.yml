@@ -1,0 +1,54 @@
+name: Git Layer 
+on:
+  push:
+    paths:
+    - ".github/workflows/git.yml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Bundle layer with dependencies
+        run: |
+          mkdir -p git-layer
+          docker run --rm -v "$PWD"/git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
+          cd git-layer
+          zip -yr ../git-layer.zip .
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: git-layer.zip 
+          path: git-layer.zip
+#  setup:
+  #    steps: 
+  #      - name: Create directory
+  #        run: mkdir ./build
+  #  build:
+  #    strategy:
+  #      matrix:
+  #        target: [3.0.3]
+  #    container: 
+  #      image: lambci/lambda-base:build 
+  #      volumes:
+  #        - ./build:/tmp/build
+  #      env:
+  #        RUBY_VERSION: ${{matrix.target}}
+  #    steps:
+  #      - name: build ruby ${{ matrix.target }}
+  #        run: |
+  #          yum install -y git bzip2 openssl-devel libyaml-devel libffi-devel \
+  #            readline-devel zlib-devel gdbm-devel ncurses-devel \
+  #            gcc gcc-c++ autoconf automake libtool bison
+  #          mkdir /tmp/build
+  #          cd /tmp/build
+  #          git clone https://github.com/rbenv/ruby-build.git
+  #          PREFIX=/usr/local ./ruby-build/install.sh
+  #          mkdir -p /tmp/build/opt/ruby${RUBY_VERSION}
+  #          ruby-build $RUBY_VERSION /tmp/build/opt/ruby${RUBY_VERSION}
+  #    upload:
+  #      - name: zip ruby ${{ matrix.target}}
+  #        run:  zip -r ruby${{matrix.target}}.zip ./build
+  #      - uses: actions/upload-artifact@v2
+  #        with:
+  #          name: ruby${{matrix.target}}.zip 
+  #          path: layers/ruby${{matrix.target}}.zip
