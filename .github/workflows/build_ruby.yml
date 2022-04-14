@@ -3,18 +3,19 @@ on:
   push:
     tags: 
       - ruby
-jobs: 
-  runs-on: ubuntu-latest
-  steps:
-    - name: Install dependencies with LambCI
-      uses: docker://lambci/lambda:build-python3.8
-      with:
-        entrypoint: pip
-        args: install -r requirements.txt --target .
-    - name: Bundle layer with dependencies
-      run: |
-        zip -r build.zip .
-  #  setup:
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install dependencies with LambCI
+        uses: docker://lambci/lambda:build-python3.8
+        with:
+          entrypoint: pip
+          args: install -r requirements.txt --target .
+      - name: Bundle layer with dependencies
+        run: |
+          zip -r build.zip .     
+#  setup:
   #    steps: 
   #      - name: Create directory
   #        run: mkdir ./build
