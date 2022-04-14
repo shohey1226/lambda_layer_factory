@@ -1,0 +1,21 @@
+name: Git Layer 
+on:
+  push:
+    paths:
+    - ".github/workflows/git.yml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build git layer with yumda 
+        run: |
+          mkdir -p git-layer
+          docker run --rm -v ${PWD}/git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
+          cd git-layer
+          sudo zip -yr ../git-layer.zip . 
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: git-layer.zip 
+          path: git-layer.zip
