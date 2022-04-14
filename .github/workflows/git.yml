@@ -13,7 +13,8 @@ jobs:
           mkdir -p git-layer
           docker run --rm -v git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
           cd git-layer
-          zip -yr ../git-layer.zip .
+          ls -al 
+          zip -yr ../git-layer.zip . -i .
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
