@@ -7,11 +7,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: Install dependencies with LambCI
-        uses: docker://lambci/lambda:build-python3.8
+        uses: docker://lambci/lambda-base:build
         with:
-          entrypoint: pip
-          args: install -r requirements.txt --target .
+          entrypoint: scripts/build_ruby.sh 
+          args: 3.0.3 
       - name: Bundle layer with dependencies
         run: |
           zip -r build.zip .     
