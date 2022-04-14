@@ -1,8 +1,9 @@
 name: Ruby binary build
 on:
   push:
-    tags: 
-      - ruby
+    paths:
+    - ".github/workflows/build_ruby.yml"
+    - "scripts/build_ruby.sh"
 jobs:
   build:
     runs-on: ubuntu-latest
