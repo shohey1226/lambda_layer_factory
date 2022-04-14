@@ -12,8 +12,8 @@ jobs:
         run: |
           mkdir -p git-layer
           echo $PWD
-          pwd
-          docker run --rm -v ${PWD}git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
+          docker run --rm -v ${PWD}/git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
+          ls -al
           cd git-layer
           ls -al 
           zip -yr ../git-layer.zip . -i .
