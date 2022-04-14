@@ -16,7 +16,7 @@ jobs:
           ls -al
           cd git-layer
           ls -al 
-          zip -yr ../git-layer.zip . 
+          sudo zip -yr ../git-layer.zip . 
       - name: Create artifact
         uses: actions/upload-artifact@v2
         with:
