@@ -13,6 +13,7 @@ jobs:
           mkdir -p git-layer
           docker run --rm -v ${PWD}/git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
           cd git-layer
+          echo "GIT_VERSION=$(git --version | cut -d' ' -f3)" >> $GITHUB_ENV
           sudo zip -yr ../git-layer.zip . 
       - name: Create Release(git-layer)
         id: create_release
@@ -20,8 +21,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: git 
-          release_name: git 
+          tag_name: git${{env.GIT_VERSION}} 
+          release_name: git${{env.GIT_VERSION}} 
           draft: false
           prerelease: false
       - name: Upload Release Asset
