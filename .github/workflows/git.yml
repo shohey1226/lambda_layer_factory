@@ -14,8 +14,28 @@ jobs:
           docker run --rm -v ${PWD}/git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
           cd git-layer
           sudo zip -yr ../git-layer.zip . 
-      - name: Create artifact
-        uses: actions/upload-artifact@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: git-layer.zip 
-          path: git-layer.zip
+          tag_name: git 
+          release_name: git 
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./git-layer.zip
+          asset_name: git-layer.zip
+          asset_content_type: application/zip
+          #      - name: Create artifact
+          #        uses: actions/upload-artifact@v2
+          #        with:
+          #          name: git-layer.zip 
+          #          path: git-layer.zip
