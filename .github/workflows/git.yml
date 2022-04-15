@@ -14,7 +14,7 @@ jobs:
           docker run --rm -v ${PWD}/git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
           cd git-layer
           sudo zip -yr ../git-layer.zip . 
-      - name: Create Release
+      - name: Create Release(git-layer)
         id: create_release
         uses: actions/create-release@v1
         env:
