@@ -1,0 +1,37 @@
+name: cURL Layer 
+on:
+  push:
+    paths:
+    - ".github/workflows/curl.yml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build curl layer with yumda 
+        run: |
+          mkdir -p curl-layer
+          docker run --rm -v ${PWD}/curl-layer:/lambda/opt lambci/yumda:2 yum install -y curl 
+          cd curl-layer
+          echo "VERSION=$(curl --version | awk 'NR==1{print $2}')" >> $GITHUB_ENV
+          sudo zip -yr ../curl-layer.zip . 
+      - name: Create Release(curl-layer)
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: curl_v${{env.VERSION}} 
+          release_name: curl_v${{env.VERSION}} 
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ./curl-layer.zip
+          asset_name: curl-layer.zip
+          asset_content_type: application/zip
