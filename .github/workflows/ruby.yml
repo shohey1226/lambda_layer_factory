@@ -7,9 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-   strategy:
-     matrix:
-       target: [3.0.3]
+    strategy:
+      matrix:
+        target: [3.0.3]
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies with LambCI
