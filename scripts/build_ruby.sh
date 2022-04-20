@@ -6,6 +6,6 @@ git clone https://github.com/rbenv/ruby-build.git
 PREFIX=/usr/local ./ruby-build/install.sh
 
 RUBY_VERSION=$1
-mkdir ruby
-ruby-build $RUBY_VERSION ./ruby 
+mkdir build 
+ruby-build $RUBY_VERSION ./build
 
