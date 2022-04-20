@@ -19,7 +19,7 @@ jobs:
           args: ${{matrix.target}} 
       - name: Bundle layer with dependencies
         run: |
-          zip -r ruby_v${{matrix.target}}-layer.zip .     
+          zip -r ruby_v${{matrix.target}}-layer.zip ./ruby
       - name: Create Release(ruby-layer)
         id: create_release
         uses: actions/create-release@v1
