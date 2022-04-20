@@ -11,7 +11,7 @@ jobs:
       - name: Build zip layer with yumda 
         run: |
           mkdir -p zip-layer
-          docker run --rm -v ${PWD}/zip-layer:/lambda/opt lambci/yumda:2 yum install -y zip 
+          docker run --rm -v ${PWD}/zip-layer:/lambda/opt lambci/yumda:2 yum install -y zip unzip 
           cd zip-layer
           echo "VERSION=$(zip -v | grep 'This is' | cut -d' ' -f4)" >> $GITHUB_ENV
           sudo zip -yr ../zip-layer.zip . 
