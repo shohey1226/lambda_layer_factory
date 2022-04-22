@@ -11,7 +11,7 @@ jobs:
       - name: Build git layer with yumda 
         run: |
           mkdir -p git-layer
-          docker run --rm -v ${PWD}/git-layer:/lambda/opt lambci/yumda:2 yum install -y git 
+          docker run --rm -v ${PWD}/git-layer:/lambda/opt lambci/yumda:2 yum install -y git libcurl-devel
           cd git-layer
           echo "GIT_VERSION=$(git --version | cut -d' ' -f3)" >> $GITHUB_ENV
           sudo zip -yr ../git-layer.zip . 
