@@ -1,19 +1,19 @@
-name: Ruby devels
+name: Ruby deps
 on:
   push:
     paths:
-    - ".github/workflows/ruby_devel.yml"
+    - ".github/workflows/ruby_deps.yml"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build ruby devel layer with yumda 
+      - name: Build ruby deps layer with yumda 
         run: |
-          mkdir -p ruby_devel-layer
-          docker run --rm -v ${PWD}/ruby_devel-layer:/lambda/opt lambci/yumda:2 yum install -y openssl-devel libyaml-devel libffi-devel readline-devel zlib-devel gdbm-devel ncurses-devel 
-          cd ruby_devel-layer 
-          sudo zip -yr ../ruby_devel-layer.zip . 
+          mkdir -p ruby_deps-layer
+          docker run --rm -v ${PWD}/ruby_deps-layer:/lambda/opt lambci/yumda:2 yum install -y libyaml 
+          cd ruby_deps-layer 
+          sudo zip -yr ../ruby_deps-layer.zip . 
       - name: Create Release(ruby_dvel-layer)
         id: create_release
         if: github.ref == 'refs/heads/main'
@@ -21,8 +21,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ruby_devel 
-          release_name: ruby_devel 
+          tag_name: ruby_deps 
+          release_name: ruby_deps 
           draft: false
           prerelease: false
       - name: Upload Release Asset
@@ -33,12 +33,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ./ruby_devel-layer.zip
-          asset_name: ruby_devel-layer.zip
+          asset_path: ./ruby_deps-layer.zip
+          asset_name: ruby_deps-layer.zip
           asset_content_type: application/zip
       - name: Create artifact
         uses: actions/upload-artifact@v2
         if: github.ref != 'refs/heads/main'
         with:
-          name: ruby_devel-layer.zip 
-          path: ruby_devel-layer.zip
+          name: ruby_deps-layer.zip 
+          path: ruby_deps-layer.zip
