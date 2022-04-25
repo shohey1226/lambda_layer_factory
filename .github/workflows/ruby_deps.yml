@@ -11,7 +11,7 @@ jobs:
       - name: Build ruby deps layer with yumda 
         run: |
           mkdir -p ruby_deps-layer
-          docker run --rm -v ${PWD}/ruby_deps-layer:/lambda/opt lambci/yumda:2 yum install -y libyaml sqlite-libs postgresql-libs gcc gcc-c++ 
+          docker run --rm -v ${PWD}/ruby_deps-layer:/lambda/opt lambci/yumda:2 yum install -y libyaml sqlite-libs postgresql-libs gcc gcc-c++ autoconf automake libtool bison 
           cd ruby_deps-layer 
           sudo zip -yr ../ruby_deps-layer.zip . 
       - name: Create Release(ruby_dvel-layer)
